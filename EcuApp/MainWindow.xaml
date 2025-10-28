@@ -1,0 +1,94 @@
+﻿<Window x:Class="EcuApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EcuApp"
+        xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
+        mc:Ignorable="d"
+        Title="System Race - ECU Editor" Height="680" Width="1000"> <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> <RowDefinition Height="*"/>    </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0">
+             <MenuItem Header="_Arquivo">
+                 <MenuItem Header="_Abrir Arquivos..." Click="MenuAbrir_Click"/>
+                 <MenuItem x:Name="MenuSalvar" Header="_Salvar Arquivo .BIN" Click="MenuSalvar_Click" IsEnabled="False"/>
+                 <Separator/>
+                 <MenuItem Header="_Sair" Click="MenuSair_Click"/>
+             </MenuItem>
+        </Menu>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,5,10,10">
+            <Button x:Name="OpenFilesButton" Content="Abrir Arquivos (XDF e BIN)..." Click="OpenFilesButton_Click" Padding="10" HorizontalAlignment="Left"/>
+            <Button x:Name="SaveFileButton" Content="Salvar Arquivo .BIN" Click="SaveFileButton_Click" Padding="10" HorizontalAlignment="Left" Margin="10,0,0,0" IsEnabled="False"/>
+        </StackPanel>
+
+        <Grid Grid.Row="2" Margin="10,0,10,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/> <ColumnDefinition Width="*"/>   </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>     <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> </Grid.RowDefinitions>
+
+                <ListView x:Name="MapListView"
+                          Grid.Row="0"
+                          DisplayMemberPath="Definition.Title"
+                          SelectionChanged="MapListView_SelectionChanged"/>
+
+                <GroupBox Grid.Row="1" Header="Detalhes do Mapa" Margin="0,10,0,0" Padding="5">
+                    <StackPanel>
+                        <TextBlock>Endereço: <Run x:Name="MapAddressText" FontWeight="Bold">N/A</Run></TextBlock>
+                        <TextBlock Margin="0,3,0,0">Tamanho (Y x X): <Run x:Name="MapSizeText" FontWeight="Bold">N/A</Run></TextBlock>
+                        <TextBlock Margin="0,3,0,0">Formato Valor (Z): <Run x:Name="MapFormatText" FontWeight="Bold">N/A</Run></TextBlock>
+                        <TextBlock Margin="0,3,0,0">Fórmula Valor (Z): <Run x:Name="MapEquationText" FontWeight="Bold">N/A</Run></TextBlock>
+                    </StackPanel>
+                </GroupBox>
+
+<GroupBox Grid.Row="2" Header="Editar Células Selecionadas" Margin="0,10,0,0" Padding="5">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> <RowDefinition Height="Auto"/> </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/> <ColumnDefinition Width="*"/>   <ColumnDefinition Width="Auto"/> </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Definir Valor:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBox   Grid.Row="0" Grid.Column="1" x:Name="SetValueTextBox" VerticalAlignment="Center"/>
+                        <Button    Grid.Row="0" Grid.Column="2" Content="Aplicar" Click="ApplyValueButton_Click" Margin="5,0,0,0" Padding="5,2"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Incrementar por:" VerticalAlignment="Center" Margin="0,5,5,0"/>
+                        <TextBox   Grid.Row="1" Grid.Column="1" x:Name="IncrementValueTextBox" Text="1" VerticalAlignment="Center" Margin="0,5,0,0"/>
+                        <Button    Grid.Row="1" Grid.Column="2" Content="Aplicar" Click="IncrementValueButton_Click" Margin="5,5,0,0" Padding="5,2"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Decrementar por:" VerticalAlignment="Center" Margin="0,5,5,0"/>
+                        <TextBox   Grid.Row="2" Grid.Column="1" x:Name="DecrementValueTextBox" Text="1" VerticalAlignment="Center" Margin="0,5,0,0"/>
+                        <Button    Grid.Row="2" Grid.Column="2" Content="Aplicar" Click="DecrementValueButton_Click" Margin="5,5,0,0" Padding="5,2"/>
+
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Incrementar (%):" VerticalAlignment="Center" Margin="0,5,5,0"/>
+                        <TextBox   Grid.Row="3" Grid.Column="1" x:Name="IncrementPercentTextBox" Text="5" VerticalAlignment="Center" Margin="0,5,0,0"/>
+                        <Button    Grid.Row="3" Grid.Column="2" Content="Aplicar" Click="IncrementPercentButton_Click" Margin="5,5,0,0" Padding="5,2"/>
+
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Decrementar (%):" VerticalAlignment="Center" Margin="0,5,5,0"/>
+                        <TextBox   Grid.Row="4" Grid.Column="1" x:Name="DecrementPercentTextBox" Text="5" VerticalAlignment="Center" Margin="0,5,0,0"/>
+                        <Button    Grid.Row="4" Grid.Column="2" Content="Aplicar" Click="DecrementPercentButton_Click" Margin="5,5,0,0" Padding="5,2"/>
+
+                    </Grid>
+                </GroupBox>
+
+            </Grid> <TabControl Grid.Column="1" Margin="10,0,0,0">
+                <TabItem Header="Visualização 2D (Tabela)">
+                     <DataGrid x:Name="MapDataGrid"
+                               IsReadOnly="False" CanUserAddRows="False" CanUserDeleteRows="False"
+                               AutoGenerateColumns="True"
+                               CellEditEnding="MapDataGrid_CellEditEnding"
+                               PreviewKeyDown="MapDataGrid_PreviewKeyDown"
+                               SelectionMode="Extended" SelectionUnit="Cell"/>
+                 </TabItem>
+                 <TabItem Header="Visualização Gráfica (Mapa de Calor)">
+                     <ScottPlot:WpfPlot x:Name="WpfPlot" />
+                 </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</Window>
