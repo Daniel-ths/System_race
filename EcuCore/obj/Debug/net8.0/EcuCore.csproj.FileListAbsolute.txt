@@ -1,0 +1,14 @@
+C:\Users\Apollo\Documents\_projetos_developer\System_race\EcuCore\bin\Debug\net8.0\EcuCore.deps.json
+C:\Users\Apollo\Documents\_projetos_developer\System_race\EcuCore\bin\Debug\net8.0\EcuCore.dll
+C:\Users\Apollo\Documents\_projetos_developer\System_race\EcuCore\bin\Debug\net8.0\EcuCore.pdb
+C:\Users\Apollo\Documents\_projetos_developer\System_race\EcuCore\obj\Debug\net8.0\EcuCore.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Apollo\Documents\_projetos_developer\System_race\EcuCore\obj\Debug\net8.0\EcuCore.AssemblyInfoInputs.cache
+C:\Users\Apollo\Documents\_projetos_developer\System_race\EcuCore\obj\Debug\net8.0\EcuCore.AssemblyInfo.cs
+C:\Users\Apollo\Documents\_projetos_developer\System_race\EcuCore\obj\Debug\net8.0\EcuCore.csproj.CoreCompileInputs.cache
+C:\Users\Apollo\Documents\_projetos_developer\System_race\EcuCore\obj\Debug\net8.0\EcuCore.sourcelink.json
+C:\Users\Apollo\Documents\_projetos_developer\System_race\EcuCore\obj\Debug\net8.0\EcuCore.dll
+C:\Users\Apollo\Documents\_projetos_developer\System_race\EcuCore\obj\Debug\net8.0\refint\EcuCore.dll
+C:\Users\Apollo\Documents\_projetos_developer\System_race\EcuCore\obj\Debug\net8.0\EcuCore.pdb
+C:\Users\Apollo\Documents\_projetos_developer\System_race\EcuCore\obj\Debug\net8.0\ref\EcuCore.dll
+C:\Users\Apollo\Documents\_projetos_developer\System_race\EcuCore\bin\Debug\net8.0\EcuCore.xml
+C:\Users\Apollo\Documents\_projetos_developer\System_race\EcuCore\obj\Debug\net8.0\EcuCore.xml

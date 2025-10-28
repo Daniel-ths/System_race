@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EcuCore</name>
+    </assembly>
+    <members>
+        <member name="T:BinDataLoader">
+            <summary>
+            Responsável por ler os dados de um arquivo .BIN (array de bytes)
+            com base em uma EcuMapDefinition e preencher um EcuMap.
+            </summary>
+        </member>
+        <member name="M:BinDataLoader.LoadMapData(EcuMapDefinition,System.Byte[])">
+            <summary>
+            Carrega os dados de um mapa.
+            </summary>
+            <param name="definition">A definição do mapa (onde ler)</param>
+            <param name="fileBytes">O conteúdo do arquivo .BIN</param>
+            <returns>Um EcuMap preenchido com dados</returns>
+        </member>
+        <member name="M:BinDataLoader.ReadValue(System.Int64,System.String)">
+            <summary>
+            Lê um valor de um endereço, respeitando o formato (8bit, 16bit, signed, endianness).
+            </summary>
+        </member>
+        <member name="M:BinDataLoader.GetSizeFromFormat(System.String)">
+            <summary>
+            Retorna quantos bytes um formato ocupa.
+            </summary>
+        </member>
+        <member name="T:ChecksumCalculator">
+            <summary>
+            Calcula checksums para um arquivo .BIN.
+            </summary>
+        </member>
+        <member name="M:ChecksumCalculator.CalculateSum16_BE(System.Byte[],System.Int64,System.Int64)">
+            <summary> Soma 16 bits, retorna Big-Endian (Hi, Lo) </summary>
+        </member>
+        <member name="M:ChecksumCalculator.CalculateCrc16CcittKermit_LE(System.Byte[],System.Int64,System.Int64)">
+            <summary>
+            Calcula CRC-16-CCITT (Kermit: poly=0x1021, init=0x0000, refin=true, refout=true, xorout=0x0000)
+            Retorna o resultado como 2 bytes Little-Endian (Lo, Hi).
+            </summary>
+        </member>
+        <member name="T:ChecksumDefinition">
+            <summary>
+            Define as propriedades de um bloco de checksum lido do XDF.
+            </summary>
+        </member>
+        <member name="P:ChecksumDefinition.StorageAddress">
+            <summary>
+            O endereço onde o valor do checksum é *escrito* no .BIN.
+            </summary>
+        </member>
+        <member name="P:ChecksumDefinition.Type">
+            <summary>
+            O tipo de algoritmo (ex: "SUM8", "SUM16").
+            </summary>
+        </member>
+        <member name="P:ChecksumDefinition.StartAddress">
+            <summary>
+            O endereço de memória onde o cálculo do checksum começa.
+            </summary>
+        </member>
+        <member name="P:ChecksumDefinition.EndAddress">
+            <summary>
+            O endereço de memória onde o cálculo do checksum termina.
+            </summary>
+        </member>
+        <member name="T:EcuMap">
+            <summary>
+            Representa um mapa carregado na memória, contendo os dados reais
+            lidos do arquivo .BIN e convertidos.
+            </summary>
+        </member>
+        <member name="P:EcuMap.Definition">
+            <summary>
+            A definição (o "como fazer") deste mapa.
+            </summary>
+        </member>
+        <member name="P:EcuMap.XAxisValues">
+            <summary>
+            Os valores do cabeçalho do Eixo X (ex: 500.0, 1000.0, 1500.0).
+            </summary>
+        </member>
+        <member name="P:EcuMap.YAxisValues">
+            <summary>
+            Os valores do cabeçalho do Eixo Y (ex: 80.0, 90.0, 100.0).
+            </summary>
+        </member>
+        <member name="P:EcuMap.ZValues">
+            <summary>
+            Os valores principais da tabela (Z-Axis), já convertidos.
+            Este é um array 2D [linha, coluna].
+            </summary>
+        </member>
+        <member name="M:EcuMap.#ctor(EcuMapDefinition)">
+            <summary>
+            Construtor: Cria um EcuMap com base em sua definição.
+            </summary>
+        </member>
+        <member name="T:EcuMapDefinition">
+            <summary>
+            Representa a definição de um mapa (tabela) lido de um arquivo XDF.
+            </summary>
+        </member>
+        <member name="P:EcuMapDefinition.Title">
+            <summary>
+            O nome do mapa, como "Tabela de Ignição Carga Parcial".
+            </summary>
+        </member>
+        <member name="P:EcuMapDefinition.Address">
+            <summary>
+            O endereço de memória (em hexadecimal) onde os dados deste mapa começam no arquivo .BIN.
+            </summary>
+        </member>
+        <member name="P:EcuMapDefinition.XAxis">
+            <summary>
+            Descrição do eixo X (ex: "RPM").
+            </summary>
+        </member>
+        <member name="P:EcuMapDefinition.YAxis">
+            <summary>
+            Descrição do eixo Y (ex: "Carga do Motor").
+            </summary>
+        </member>
+        <member name="P:EcuMapDefinition.ValueFormat">
+            <summary>
+            O formato dos dados Z (da tabela), ex: "8bit", "16bit_hi_lo".
+            </summary>
+        </member>
+        <member name="P:EcuMapDefinition.ValueConversionFormula">
+            <summary>
+            A fórmula de conversão para os dados Z (da tabela).
+            </summary>
+        </member>
+        <member name="P:EcuMapDefinition.ValueConversionInverseFormula">
+            <summary>
+            A fórmula INVERSA para os dados Z (REAL -> RAW).
+            </summary>
+        </member>
+        <member name="T:MapAxis">
+            <summary>
+            Representa a definição de um eixo (X ou Y) de um mapa.
+            </summary>
+        </member>
+        <member name="P:MapAxis.Name">
+            <summary>
+            Nome do eixo, ex: "RPM".
+            </summary>
+        </member>
+        <member name="P:MapAxis.Dimension">
+            <summary>
+            O número de colunas (para eixo X) ou linhas (para eixo Y).
+            </summary>
+        </member>
+        <member name="P:MapAxis.Values">
+            <summary>
+            Lista de valores do cabeçalho do eixo (ex: 500, 1000, 1500...).
+            </summary>
+        </member>
+        <member name="P:MapAxis.ConversionFormula">
+            <summary>
+            A fórmula matemática para converter o valor lido do .BIN em um valor real.
+            </summary>
+        </member>
+        <member name="P:MapAxis.ValueFormat">
+            <summary>
+            O formato dos dados do eixo, ex: "8bit", "16bit_hi_lo".
+            </summary>
+        </member>
+        <member name="P:MapAxis.SourceAddress">
+            <summary>
+            O endereço de onde vêm os valores do eixo (se não forem fixos).
+            </summary>
+        </member>
+        <member name="P:MapAxis.ConversionInverseFormula">
+            <summary>
+            A fórmula INVERSA para os dados do eixo (REAL -> RAW).
+            </summary>
+        </member>
+        <member name="T:MathEvaluator">
+            <summary>
+            Avalia expressões matemáticas simples (lidas do XDF).
+            </summary>
+        </member>
+        <member name="M:MathEvaluator.Evaluate(System.String,System.Double)">
+            <summary>
+            Avalia uma expressão, substituindo 'X' pelo valor fornecido.
+            </summary>
+            <param name="expression">A fórmula (ex: "X * 0.5 - 10")</param>
+            <param name="xValue">O valor para substituir 'X'</param>
+            <returns>O resultado do cálculo</returns>
+        </member>
+        <member name="T:XdfFile">
+            <summary>
+            Representa o conteúdo completo de um arquivo XDF carregado.
+            </summary>
+        </member>
+        <member name="M:XdfParser.Parse(System.String)">
+            <summary>
+            Lê um arquivo .XDF e retorna um objeto XdfFile contendo mapas e checksums.
+            </summary>
+        </member>
+    </members>
+</doc>

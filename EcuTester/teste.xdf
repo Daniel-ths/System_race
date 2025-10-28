@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<XDF>
+
+  <XDFTABLE>
+    <title>Tabela de Ignicao Principal</title>
+    
+    <zaxis>
+      <value type="32bit_lo_hi_lo_hi"/>
+      <math>
+        <equation>X * 0.5 - 10</equation>
+        <inverse>(X + 10) / 0.5</inverse>
+      </math>
+    </zaxis>
+
+    <embeddedsource>
+      <address>0x4000</address>
+    </embeddedsource>
+
+    <XAXIS dim="8">
+      <label>
+        <name>RPM</name>
+      </label>
+      <math>
+        <equation>X * 10</equation>
+        <inverse>X / 10</inverse>
+      </math>
+      <embeddedsource>
+        <value type="16bit_hi_lo"/>
+        <address>0x3F00</address>
+      </embeddedsource>
+    </XAXIS>
+
+    <YAXIS dim="10">
+      <label>
+        <name>Carga (MAP)</name>
+      </label>
+      <math>
+        <equation>X * 0.01</equation>
+        <inverse>X / 0.01</inverse>
+      </math>
+    </YAXIS>
+    
+  </XDFTABLE>
+
+  <XDFTABLE>
+    <title>Mapa de Injecao</title>
+    <embeddedsource> <address>0x5A10</address> </embeddedsource>
+    <XAXIS dim="12"> <label> <name>RPM</name> </label> </XAXIS>
+    <YAXIS dim="12"> <label> <name>Carga (TPS)</name> </label> </YAXIS>
+  </XDFTABLE>
+  
+  <XDFCHECKSUM>
+    <title>Checksum Principal 8-bit</title>
+    <address>0x5FFF</address>
+<type>CRC16_CCITT_KERMIT</type>
+    <startaddress>0x0000</startaddress>
+    <endaddress>0x5FFE</endaddress>
+  </XDFCHECKSUM>
+  
+</XDF>
